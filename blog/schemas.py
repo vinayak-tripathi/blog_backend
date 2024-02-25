@@ -6,5 +6,15 @@ class Blog(BaseModel):
 
 class ShowBlog(Blog):
     ## this worked even without the below config
-    class Config():
-        orm_mode = True
+    # class Config():
+    #     orm_mode = True
+    pass
+
+class User(BaseModel):
+    name: str
+    email: str
+    password: str
+
+class ShowUser(BaseModel):
+    name: str
+    email: str
