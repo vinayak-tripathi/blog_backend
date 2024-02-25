@@ -18,7 +18,9 @@ def get_db():
 app = FastAPI()
 
 
-@app.post("/blog", status_code = status.HTTP_201_CREATED)
+@app.post("/blog", 
+          status_code = status.HTTP_201_CREATED,
+          tags=['Blog'])
 def create(blog: schemas.Blog, db : Session = Depends(get_db)):
     # return {'title':blog.title,'body':blog.body}
     new_blog = models.Blog(title = blog.title,
@@ -29,7 +31,9 @@ def create(blog: schemas.Blog, db : Session = Depends(get_db)):
     return new_blog
 
 
-@app.delete("/blog/{id}", status_code = status.HTTP_204_NO_CONTENT)
+@app.delete("/blog/{id}", 
+            status_code = status.HTTP_204_NO_CONTENT,
+            tags=['Blog'])
 def delete_blog(id: int, db : Session = Depends(get_db)):
     db_blog = db.query(models.Blog).filter(models.Blog.id == id)#.\
     if not db_blog.first():
@@ -40,7 +44,10 @@ def delete_blog(id: int, db : Session = Depends(get_db)):
     return {'detail':f'blog with id {id} deleted'}
 
 
-@app.put('/blog/{id}', status_code=status.HTTP_202_ACCEPTED)
+@app.put('/blog/{id}', 
+         status_code=status.HTTP_202_ACCEPTED,
+         tags=['Blog']
+         )
 def update_blog(id: int, blog: schemas.Blog, db: Session = Depends(get_db)):
     db_blog = db.query(models.Blog).filter(models.Blog.id == id)#.\
     if not db_blog.first():
@@ -51,14 +58,16 @@ def update_blog(id: int, blog: schemas.Blog, db: Session = Depends(get_db)):
     return {'details': f'Blog with id {id} updated sucessfully'}
 
 
-@app.get('/blog', response_model = List[schemas.ShowBlog])
+@app.get('/blog', response_model = List[schemas.ShowBlog],
+          tags=['Blog'])
 def get_blogs(db: Session = Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
 
 
 @app.get('/blog/{id}', status_code=status.HTTP_200_OK,
-         response_model=schemas.ShowBlog)
+         response_model=schemas.ShowBlog,
+          tags=['Blog'])
 def get_single_blog(id:int, response: Response,
                     db: Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == id).first()
@@ -73,7 +82,8 @@ def get_single_blog(id:int, response: Response,
 
 
 @app.post("/user", 
-          response_model=schemas.ShowUser)
+          response_model=schemas.ShowUser,
+          tags=['User'])
 def create_user(user: schemas.User,
                 db: Session = Depends(get_db)):
     
@@ -86,7 +96,8 @@ def create_user(user: schemas.User,
     return new_user
 
 @app.get("/user/{id}", 
-          response_model=schemas.ShowUser)
+          response_model=schemas.ShowUser,
+          tags=['User'])
 def get_user(id: int,
              db: Session = Depends(get_db)):
     
