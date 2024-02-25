@@ -1,5 +1,9 @@
 from pydantic import BaseModel
+from typing import Optional
 
-class Todo(BaseModel):
+class Blog(BaseModel):
     id: int
-    item: str
+    title: str
+    body: str
+    published: Optional[bool]=False
+    # published: Optional[bool]
